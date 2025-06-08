@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <title>KPI</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    /* ===========================================
+       Styling Navbar + Search (sesuai kode Anda)
+       =========================================== */
+   .search-box {
+      border: 1px solid #A30404;
+      border-radius: 25px;
+      padding: 5px 15px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+    }
+
+
+    .search-box input::placeholder {
+      color: #E5A7A7;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #A30404;
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .search-box:hover .search-icon {
+      color: #A30404;
+    }
+
+    .dropdown-toggle::after {
+      margin-left: 0.5em;
+      color: #6D757F;
+    }
+    .dropdown-menu {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+    .nav-link {
+      color: #A30404;
+      font-size: 14px;
+    }
+    .custom-item {
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+      padding: 12px 20px;
+      text-align: center;
+      margin-top: 11px !important;
+      border-radius: 10px !important;
+    }
+    .custom-item:hover {
+      background-color: rgb(255, 255, 255);
+    }
+    .dropdown-divider {
+      margin: 5px;
+      border-top: 2px solid #E4E4E4;
+    }
+    .bg-custom {
+      background-color: #A30404 !important;
+    }
+    .text-secondary {
+      font-size: 13px !important;
+    }
+    .footer-shape {
+      width: 30px;
+      height: 0;
+      border-top: 4px solid #A30404;
+      border-right: 5px solid transparent;
+    }
+
+    /* Override default toggler icon agar warnanya terlihat di background putih */
+    .navbar-light .navbar-toggler-icon {
+      filter: invert(20%);
+    }
+
+    /* =====================================================
+       Styling Section “Berita Terkini” (bg hitam, teks putih)
+       ===================================================== */
+    section.berita-section {
+      background-color: #000;
+      color: #fff;
+    }
+
+    /* Judul “Berita Terkini” dengan latar merah, sudut membulat di kanan */
+    .berita-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.65rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.berita-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.berita-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 850px;
+  height: 3px;
+  background-color: #6e6e6e;
+  transform: translateY(-50%);
+}
+
+
+    /* =============================================
+       Struktur Flex untuk kolom kiri dan kanan
+       ============================================= */
+    .row-berita {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem; /* jarak antar kolom */
+    }
+
+    /* Kolom kiri terbesar (Berita Utama) */
+    .col-left {
+      flex: 0 0 65%;     /* sekitar 8/12 (~66%) */
+      max-width: 65%;
+    }
+
+    /* Kolom kanan (Daftar kecil) dengan garis vertikal */
+    .col-right {
+      flex: 0 0 32%;     /* sekitar 4/12 (~33%) */
+      max-width: 32%;
+      position: relative;
+      padding-left: 2rem;  /* beri ruang untuk garis */
+    }
+
+    /* Garis vertikal di antara kolom kiri & kanan */
+    .col-right::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: #1E1E1E; /* abu gelap */
+    }
+
+    /* =============================================
+       Styling untuk “Berita Utama” di kolom kiri
+       ============================================= */
+    .card-utama {
+      border: none;
+      background-color: transparent;
+    }
+
+    .card-utama img {
+      width: 100%;
+      max-height: 400px;      /* batasi tinggi */
+      object-fit: cover;      /* crop agar proporsi terjaga */
+      border-radius: 0.5rem;
+    }
+
+   .title-utama {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .card-utama .meta-utama {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.65rem;
+      color: #CCC;
+    }
+
+    .card-utama .meta-utama .bi {
+      color: #fff;
+      margin-right: 0.25rem;
+    }
+
+
+
+    /* =============================================
+       Styling untuk Daftar Berita Kecil di kolom kanan
+       ============================================= */
+    .list-berita {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .list-berita-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .list-berita-item img {
+      flex-shrink: 0;
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+  .meta-kecil {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.5rem;
+      color: #CCC;
+    }
+
+    .meta-kecil .bi {
+      color: #fff;
+      margin-right: 0.25rem;
+    }
+
+    /* =============================
+      KONTAINER IKON “PELayanan KPI”
+      ============================= */
+    .row-pelayanan {
+      display: grid;
+      /* 5 kolom di ≥768px, 3 kolom di ≥576px, 2 kolom di bawahnya */
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5rem;       /* jarak horisontal & vertikal antar ikon */
+      justify-items: center;  
+      align-items: start;
+      margin-bottom: 10px;
+    }
+
+    /* Kotak gradient cahaya atas ke gelap bawah */
+    .bg-gradient-icon {
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 20%) 20%,
+        rgba(0 0 0 / 90%) 90%
+      );
+      border-radius: 1rem;       /* sudut membulat */
+      position: relative;        
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    /* Hover sedikit efek scale */
+    .bg-gradient-icon:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Icon di dalam kotak */
+    .bg-gradient-icon img {
+      display: block;
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+
+    /* Label teks overlay di bagian bawah kotak */
+    .icon-label {
+      position: absolute;
+      bottom: 10px;          
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 4px 10px;      
+      font-size: 0.75rem;
+      border-radius: 0.5rem;  
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      transition: background-color 0.2s ease;
+      text-align: center;
+    }
+    
+    .bg-gradient-icon:hover .icon-label {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Judul “Pelayanan KPI” */
+       .pelayanan-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.pelayanan-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.pelayanan-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 940px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+      .row-pelayanan {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1.5rem;
+      }
+      .bg-gradient-icon {
+        width: 120px;
+        height: 120px;
+      }
+      .bg-gradient-icon img {
+        width: 60px;
+        height: 60px;
+        margin-top: 18px;
+      }
+    }
+    @media (max-width: 576px) {
+      .row-pelayanan {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+      }
+      .bg-gradient-icon {
+        width: 100px;
+        height: 100px;
+      }
+      .bg-gradient-icon img {
+        width: 50px;
+        height: 50px;
+        margin-top: 16px;
+      }
+      .icon-label {
+        font-size: 0.65rem;
+        bottom: 6px;
+      }
+    }
+
+    .list-berita-item {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Hapus margin ekstra bila perlu */
+    .list-berita-item.mb-3:last-child {
+      margin-bottom: 0;
+    }
+
+    /* header kajian*/
+           .kajian-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.kajian-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.kajian-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 635px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+ .text-muted {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: #6b6b6b;
+    }
+
+    .text-muted .bi {
+      color: #6b6b6b;
+      margin-right: 0.25rem;
+    }
+    .title-custom{
+      font-size: 13px;
+    }
+    
+    /* ——————————————————————————————————
+      Video cards
+      —————————————————————————————————— */
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: .5rem;
+    }
+    .video-card img {
+      width: 100%;
+      display: block;
+    }
+    .video-card .video-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,.8), rgba(0,0,0,0));
+    }
+    .video-card .video-overlay h6 {
+      color: #fff;
+      margin-bottom: .5rem;
+      font-size: 1.1rem;
+    }
+    .video-card .video-overlay .meta {
+     display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: #ccc;
+    }
+    .video-card .video-overlay .meta .bi {
+      color: #ccc;
+      margin-right: 0.25rem;
+    }
+
+    /* ——————————————————————————————————
+      Berita KPDI list
+      —————————————————————————————————— */
+    .kpdi-list li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .kpdi-list li:last-child {
+      margin-bottom: 0;
+    }
+    .kpdi-list img {
+      flex-shrink: 0;
+      width: auto;
+      height: 120px;
+      object-fit: cover;
+      border-radius: .25rem;
+      margin-right: 1rem;
+    }
+    .kpdi-list h6 {
+      margin: 0 0 .35rem;
+      font-size: 1rem;
+    }
+    .kpdi-list .kpdi-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: #6b6b6b;
+    }
+    .kpdi-list .kpdi-meta .bi {
+      color: #6b6b6b;
+      margin-right: 0.25rem;
+    }
+
+  
+
+    /* DINAMIKA PENYIARAN */
+    .dynamics-item {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .dynamics-item .thumb {
+      flex: 0 0 45%;
+      max-width: 45%;
+      margin-bottom: 1rem;
+    }
+    .dynamics-item .thumb img {
+      width: 100%;
+      border-radius: 0.5rem;
+      object-fit: cover;
+    }
+    .dynamics-item .body {
+      flex: 1;
+      padding-left: 2rem;
+    }
+    .dynamics-item .body h5 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .dynamics-item .body .meta {
+       display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: #6b6b6b;
+      margin-bottom: 10px;
+    }
+    .dynamics-item .body .meta .bi {
+      color: #6b6b6b;
+      margin-right: 0.25rem;
+    }
+    .dynamics-item .body p {
+      color: #555;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      font-size: 0.85rem;
+    }
+    .dynamics-item .body .read-more {
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    /* POPULER */
+    .popular-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .popular-list li {
+      margin-bottom: 2rem; /* spasi antar item */
+    }
+    .popular-thumb {
+      width: 80%;
+      height: auto;
+      display: block;
+    }
+    .popular-title {
+      margin: 0.75rem 0 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #000;
+    }
+    .popular-meta {
+       display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.65rem;
+      color: #6b6b6b;;
+    }
+    .popular-meta .bi {
+      color: #6b6b6b;
+      margin-right: 0.25rem;
+    }
+
+    /* Section Header & Divider (untuk keduanya) */
+        .video-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.video-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.video-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 580px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+    .section-divider {
+      border-top: 1px solid #E0E0E0;
+      margin-bottom: 1.5rem;
+    }
+    
+       .dinamika-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.dinamika-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.dinamika-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 522px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+    /* Responsive tweak: kalau layar <992px, tiap dynamics-item tumpuk */
+    @media (max-width: 991px) {
+      .dynamics-item {
+        flex-direction: column;
+      }
+      .dynamics-item .thumb,
+      .dynamics-item .body {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 0;
+      }
+    }
+    /* ================================
+       Responsive: tumpuk kolom di <992px
+       ================================ */
+    @media (max-width: 992px) {
+      .row-berita {
+        flex-direction: column;
+      }
+      .col-left, .col-right {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 0;
+      }
+      .col-right::before {
+        display: none;
+      }
+      
+    }
+
+       .recap-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.recap-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.recap-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 255px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+   .beritakpdi-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.beritakpdi-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.beritakpdi-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 215px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+   
+        .populer-header {
+  display: inline-block;
+  background-color: #A30404;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  transform: skew(-20deg);
+  border-radius: 3px; /* pastikan sudutnya tidak bulat */
+}
+
+/* Untuk mengembalikan isi teks agar tidak ikut miring */
+.populer-header span {
+  display: inline-block;
+  transform: skew(20deg);
+}
+
+/* Garis horisontal di sebelah kanan */
+.populer-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 215px;
+  height: 3px;
+  background-color: #dfdfdf;
+  transform: translateY(-50%);
+}
+
+
+  </style>
+
+</head>
+
+<body>
+  <!-- Header Atas -->
+  <div class="text-white py-2 px-5 d-flex justify-content-between align-items-center bg-custom">
+    <div class="d-flex align-items-center gap-2">
+      <img src="assets/logo_header.png" alt="Logo KPI" height="70">
+    </div>
+    <div class="d-flex gap-3">
+      <a href="https://www.facebook.com/KPIPusat" class="text-white"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+      <a href="https://www.instagram.com/kpipusat/" class="text-white"><i class="bi bi-instagram"></i></a>
+      <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+    </div>
+  </div>
+
+  <!-- Navbar Bawah -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white px-5 py-2 ms-3 me-3">
+    <div class="container-fluid">
+      <!-- Toggler / Hamburger Icon -->
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Bagian yang akan di-collapse (menu + search) -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
+          <li class="nav-item">
+            <a class="nav-link active fw-bold" href="#">Beranda</a>
+          </li>
+          <li class="nav-item dropdown fw-bold">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tentang KPI</a>
+            <ul class="dropdown-menu custom-item">
+              <li><a class="dropdown-item fw-bold" href="#">Struktur Sekretariat</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Dasar Pembentukan</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Visi dan Misi</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Profil KPI</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">Struktur Penyiaran</a>
+            <ul class="dropdown-menu custom-item">
+              <li><a class="dropdown-item fw-bold" href="#">Prosedur Perizinan</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Pengawasan Penyiaran</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">Regulasi</a>
+            <ul class="dropdown-menu custom-item">
+              <li><a class="dropdown-item fw-bold" href="#">Undang-Undang</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Peraturan KPI</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Peraturan KPI Pusat</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Surat Edaran KPI</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">MoU</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">Publikasi</a>
+            <ul class="dropdown-menu custom-item">
+              <li><a class="dropdown-item fw-bold" href="#">Survei Indeks Kualitas Siaran Televisi</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">DIPA KPI</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Laporan Akhir Tahun</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Buku Penyiaran</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">Layanan Aplikasi</a>
+            <ul class="dropdown-menu custom-item">
+              <li><a class="dropdown-item fw-bold" href="#">Portal Pengaduan</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Data Lembaga Penyiaran</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">Konten Siaran Lokal</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold" href="#">PPID</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Search Box -->
+        <form class="search-box position-relative" role="search">
+          <input class="form-control bg-transparent" type="search" placeholder="Search here . . ." aria-label="Search">
+          <i class="bi bi-search search-icon"></i>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Bootstrap JS (pastikan dipanggil sebelum penutup </body>) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Jumbotron / Section Berita Terkini -->
+  <section class="py-5 berita-section">
+    <div class="container">
+      <!-- Judul Section + tombol VIEW ALL -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="berita-header"><span>Berita Terkini</span></h5>
+        <a href="#" class="btn btn-sm btn-dark text-white">
+          VIEW ALL <i class="bi bi-arrow-up-right"></i>
+        </a>
+      </div>
+
+      <!-- Baris Utama: dua kolom -->
+      <div class="row-berita">
+        <!-- ======================================== -->
+        <!-- Kolom Kiri: Berita Utama Besar           -->
+        <!-- ======================================== -->
+        <div class="col-left">
+          <div class="card-utama">
+            <!-- Gambar Utama -->
+            <img src="assets/berita-utama.jpg" alt="Berita Utama">
+
+            <!-- Judul Utama -->
+            <h3 class="title-utama">
+              Rakornas KPI 2025: Perkuat Penyiaran Nasional, Perlu Ada Regulasi Adaptif
+            </h3>
+
+            <!-- Metadata (By Admin, Tanggal) -->
+            <div class="meta-utama">
+              <span><i class="bi bi-person"></i>BY ADMIN</span>
+              <span><i class="bi bi-calendar3"></i>01 JUN 2025</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======================================== -->
+        <!-- Kolom Kanan: Daftar Berita Kecil          -->
+        <!-- ======================================== -->
+        <div class="col-right">
+          <div class="list-berita">
+            <!-- Item 1 -->
+            <div class="list-berita-item">
+              <img src="assets/berita-1.jpg" alt="Berita Kecil 1"
+              style="width: 160px; height: auto;">
+              <div class="item-text">
+                <h6 class="title-kecil">
+                  Peringatan Harsiarnas 92 dan Rakornas KPI di Hari Lahir Pancasila: 
+                  Sinergi Nilai Pancasila dan Penyiaran Nasional
+                </h6>
+                <div class="meta-kecil">
+                  <span><i class="bi bi-person"></i>BY ADMIN</span>
+                  <span><i class="bi bi-calendar3"></i>01 JUN 2025</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="list-berita-item">
+              <img src="assets/berita-2.jpg" alt="Berita Kecil 2"
+              style="width: 160px; height: auto;">
+              <div class="item-text">
+                <h6 class="title-kecil">
+                  Saksikan Peringatan Hari Penyiaran Nasional ke 92 di Car Free Day Sudirman
+                </h6>
+                <div class="meta-kecil">
+                  <span><i class="bi bi-person"></i>BY ADMIN</span>
+                  <span><i class="bi bi-calendar3"></i>30 MEI 2025</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="list-berita-item">
+              <img src="assets/berita-3.jpg" alt="Berita Kecil 3"
+              style="width: 160px; height: auto;">
+              <div class="item-text">
+                <h6 class="title-kecil">
+                  Sinergi DPRD dan KPI Pusat dalam Penguatan Tata Kelola KPID Sumsel
+                </h6>
+                <div class="meta-kecil">
+                  <span><i class="bi bi-person"></i>BY ADMIN</span>
+                  <span><i class="bi bi-calendar3"></i>28 MEI 2025</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tambahkan item berita kecil lainnya di sini… -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION Pelayanan KPI -->
+  <section class="py-5">
+    <div class="container">
+      <!-- Judul Pelayanan KPI -->
+      <h5 class="pelayanan-header mb-5 mt-2"><span>Pelayanan KPI</span></h5>
+
+      <!-- Grid Ikon -->
+      <div class="row-pelayanan">
+        <!-- Item 1: Pengaduan & Apresiasi -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/pengaduan_apresiasi.png" alt="Pengaduan & Apresiasi">
+            <div class="icon-label">Pengaduan & <br>Apresiasi</div>
+          </div>
+        </div>
+
+        <!-- Item 2: Edaran & Sanksi -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/edaran_sanksi.png" alt="Edaran & Sanksi">
+            <div class="icon-label">Edaran & Sanksi</div>
+          </div>
+        </div>
+
+        <!-- Item 3: KPID -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/kpid_logo.png" alt="KPID">
+            <div class="icon-label">KPID</div>
+          </div>
+        </div>
+
+        <!-- Item 4: Aduan Siber -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/aduan_siber.png" alt="Aduan Siber">
+            <div class="icon-label">Aduan Siber</div>
+          </div>
+        </div>
+
+        <!-- Item 5: Data Program Lokal -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/data_program_lokal.png" alt="Data Program Lokal">
+            <div class="icon-label">Data Program <br> Lokal</div>
+          </div>
+        </div>
+
+        <!-- Item 6: Newsletter -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/newsletter.png" alt="Newsletter">
+            <div class="icon-label">Newsletter</div>
+          </div>
+        </div>
+
+        <!-- Item 7: JDIH -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/jdih.png" alt="JDIH">
+            <div class="icon-label">JDIH</div>
+          </div>
+        </div>
+
+        <!-- Item 8: PPID -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/ppid.png" alt="PPID">
+            <div class="icon-label">PPID</div>
+          </div>
+        </div>
+
+        <!-- Item 9: Buku Penyiaran -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/buku_penyiaran.png" alt="Buku Penyiaran">
+            <div class="icon-label">Buku Penyiaran</div>
+          </div>
+        </div>
+
+        <!-- Item 10: Data TV & Radio -->
+        <div>
+          <div class="bg-gradient-icon">
+            <img src="assets/data_tv_radio.png" alt="Data TV & Radio">
+            <div class="icon-label">Data TV & Radio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Kolom Kiri: Kajian -->
+        <div class="col-lg-8">
+          <!-- Judul Section Kajian -->
+          <h5 class="kajian-header mb-5"><span>Kajian</span></h5>
+
+          <!-- Wrapper Gambar Utama + Daftar Kecil -->
+          <div class="row gx-4 align-items-start mb-4">
+            <!-- Gambar Utama + Meta + Judul -->
+            <div class="col-md-8">
+              <img src="assets/kajian_utama.jpg"
+                  alt="Kajian Utama"
+                  class="img-fluid rounded shadow-sm mb-3">
+              <!-- Meta Tepat di Bawah Gambar -->
+              <!-- Judul Utama -->
+              <h3 class="title-utama">
+                Media Sosial Sebagai Makanan Ringan Dan Rokok
+              </h3>
+              <ul class="list-inline text-muted small mb-3">
+                <li class="list-inline-item me-3">
+                  <i class="bi bi-person me-1"></i>By Admin
+                </li>
+                <li class="list-inline-item me-3">
+                  <i class="bi bi-calendar3 me-1"></i>31 Jan, 2025
+                </li>
+                <li class="list-inline-item">
+                  <i class="bi bi-clock me-1"></i>15 Mins
+                </li>
+              </ul>
+            </div>
+            <!-- Daftar Kecil -->
+            <div class="col-md-4">
+              <ul class="list-unstyled">
+                <li class="d-flex justify-content-between mb-4">
+                  <div class="me-3">
+                    <p class="mb-1 fw-semibold title-custom">
+                      Meneguhkan Demokratisasi Penyiaran: Realitas Pengawasan Penyiaran
+                    </p>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>29 Nov, 2024
+                    </small>
+                  </div>
+                  <img src="assets/Kajian-1.jpg"
+                      alt=""
+                      style="width: 120px; height: 120px; object-fit: cover; border-radius: 0.25rem;">
+                </li>
+                <li class="d-flex justify-content-between mb-4">
+                  <div class="me-3">
+                    <p class="mb-1 fw-semibold title-custom">
+                      Potret Kualitas Program Siaran Anak Di Televisi Indonesia
+                    </p>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>09 Mei, 2024
+                    </small>
+                  </div>
+                  <img src="assets/Kajian-2.jpg"
+                      alt=""
+                      style="width: 120px; height: 120px; object-fit: cover; border-radius: 0.25rem;">
+                </li>
+                <li class="d-flex justify-content-between">
+                  <div class="me-3">
+                    <p class="mb-1 fw-semibold title-custom">
+                      Potret Sinetron Di Media Televisi Indonesia
+                    </p>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>09 Mei, 2023
+                    </small>
+                  </div>
+                  <img src="assets/Kajian-3.jpg"
+                      alt=""
+                      style="width: 120px; height: 120px; object-fit: cover; border-radius: 0.25rem;">
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Recap -->
+        <div class="col-lg-4">
+          <h5 class="recap-header mb-5"><span>Recap</span></h5>
+
+          <!-- Container Recap Items -->
+          <div class="recap-list">
+            <!-- Item 1: Infografis -->
+            <a href="#" class="recap-item position-relative d-block mb-3 rounded overflow-hidden">
+              <img src="assets/Recap-1.jpg" alt="Infografis" class="img-fluid w-100">
+              <i class="bi bi-arrow-up-right text-white position-absolute top-50 end-3 translate-middle-y fs-5"></i>
+            </a>
+
+            <!-- Item 2: Video -->
+            <a href="#" class="recap-item position-relative d-block mb-3 rounded overflow-hidden">
+              <img src="assets/Recap-2.jpg" alt="Video" class="img-fluid w-100">
+              <i class="bi bi-arrow-up-right text-white position-absolute top-50 end-3 translate-middle-y fs-5"></i>
+            </a>
+
+            <!-- Item 3: Newsletter -->
+            <a href="#" class="recap-item position-relative d-block mb-3 rounded overflow-hidden">
+              <img src="assets/Recap-3.jpg" alt="Newsletter" class="img-fluid w-100">
+              <i class="bi bi-arrow-up-right text-white position-absolute top-50 end-3 translate-middle-y fs-5"></i>
+            </a>
+
+            <!-- Item 4: Agenda -->
+            <a href="#" class="recap-item position-relative d-block mb-3 rounded overflow-hidden">
+              <img src="assets/Recap-4.jpg" alt="Agenda" class="img-fluid w-100">
+              <i class="bi bi-arrow-up-right text-white position-absolute top-50 end-3 translate-middle-y fs-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Video Terkini -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Video Terkini -->
+        <div class="col-lg-8">
+          <h5 class="video-header mb-5"><span>Video Terkini</span></h5>
+          <div class="row g-4">
+            <!-- Baris 1: dua video besar -->
+            <div class="col-md-6">
+              <div class="video-card">
+                <img src="assets/video-1.jpg" alt="Pengukuhan Komisioner KPI Pusat">
+                <div class="video-overlay">
+                  <h6 class="fw-semibold">Pengukuhan Komisioner KPI Pusat</h6>
+                  <div class="meta">
+                    <i class="bi bi-calendar3"></i>23 JUNI, 2023&nbsp;
+                    <i class="bi bi-clock"></i>2 MINS
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="video-card">
+                <img src="assets/video-2.jpg" alt="Gerakan Literasi Sejuta Pemirsa">
+                <div class="video-overlay">
+                  <h6 class="fw-semibold">Gerakan Literasi Sejuta Pemirsa</h6>
+                  <div class="meta">
+                    <i class="bi bi-calendar3"></i>19 JUNE, 2023&nbsp;
+                    <i class="bi bi-clock"></i>176 MINS
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Baris 2: tiga video kecil -->
+            <div class="col-md-4">
+              <div class="video-card">
+                <img src="assets/video-3.jpg" alt="Gerakan Literasi Sejuta Pemirsa 2023">
+                <div class="video-overlay">
+                  <h6 class="fw-semibold">Gerakan Literasi Sejuta Pemirsa 2023</h6>
+                  <div class="meta">
+                    <i class="bi bi-calendar3"></i>05 June, 2023
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="video-card">
+                <img src="assets/video-4.jpg" alt="Anugerah Syiar Ramadhan 2023">
+                <div class="video-overlay">
+                  <h6 class="fw-semibold">Anugerah Syiar Ramadhan 2023</h6>
+                  <div class="meta">
+                    <i class="bi bi-calendar3"></i>26 Mei, 2023
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="video-card">
+                <img src="assets/video-5.jpg" alt="Bahasa Isyarat di Lembaga Penyiaran">
+                <div class="video-overlay">
+                  <h6 class="fw-semibold">Bahasa Isyarat di Lembaga Penyiaran</h6>
+                  <div class="meta">
+                    <i class="bi bi-calendar3"></i>09 Mei, 2023
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Berita KPDI -->
+        <div class="col-lg-4">
+          <h5 class="beritakpdi-header mb-5"><span>Berita KPDI</span></h5>
+          
+          <ul class="list-unstyled kpdi-list">
+            <li>
+              <img src="assets/berita-kpdi-1.jpg" alt="">
+              <div>
+                <h6 class="fw-semibold">Keterwakilan Perempuan Dalam Pengurus KPID Prioritas Utama</h6>
+                <div class="kpdi-meta">
+                  <i class="bi bi-calendar3"></i>02 JUN 2025
+                </div>
+              </div>
+            </li>
+            <li>
+              <img src="assets/berita-kpdi-2.jpg" alt="">
+              <div>
+                <h6 class="fw-semibold">Kembalilah Tonton TV Dan Dengarkan Radio</h6>
+                <div class="kpdi-meta">
+                  <i class="bi bi-calendar3"></i>27 MEI 2025
+                </div>
+              </div>
+            </li>
+            <li>
+              <img src="assets/berita-kpdi-3.jpg" alt="">
+              <div>
+                <h6 class="fw-semibold">Dorong Penyiaran Sehat Dan Berkualitas</h6>
+                <div class="kpdi-meta">
+                  <i class="bi bi-calendar3"></i>26 MEI 2025
+                </div>
+              </div>
+            </li>
+            <li>
+              <img src="assets/berita-kpdi-4.jpg" alt="">
+              <div>
+                <h6 class="fw-semibold">KPID Diminta Dukung Keterbukaan Informasi Publik</h6>
+                <div class="kpdi-meta">
+                  <i class="bi bi-calendar3"></i>26 MEI 2025
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================
+      Section Dinamika Penyiaran + Populer
+      =================================== -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Dinamika Penyiaran (kiri) -->
+        <div class="col-lg-8">
+          <h5 class="dinamika-header mb-5"><span>Penyiaran</span></h5>
+          
+
+          <!-- Item 1 -->
+          <div class="dynamics-item">
+            <div class="thumb">
+              <img src="assets/dynamics-1.jpg" alt="Target Cakupan Siaran">
+            </div>
+            <div class="body">
+              <h5>Target Cakupan Siaran 100%, Papua New Guinea Kenalkan Kembali Radio Gelombang Pendek</h5>
+              <div class="meta">
+                <i class="bi bi-calendar3"></i>03 JUN 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+              <p>
+                Jakarta – Lembaga Penyiaran Nasional (NBC) Papua Nugini atau PNG bermaksud untuk memperkenalkan
+                kembali radio gelombang pendek. Hal ini dilakukan guna mencapai sasaran pemerintah yakni cakupan...
+              </p>
+              <a href="#" class="btn btn-outline-primary btn-sm read-more">
+                READ MORE <i class="bi bi-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="dynamics-item">
+            <div class="thumb">
+              <img src="assets/dynamics-2.jpg" alt="Merasa Ditekan, Media Publik AS">
+            </div>
+            <div class="body">
+              <h5>Merasa Ditekan, Media Publik AS Sampaikan Argumennya Ke Kongres Dan Pengadilan</h5>
+              <div class="meta">
+                <i class="bi bi-calendar3"></i>27 MEI 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+              <p>
+                Jakarta – Beberapa waktu lalu, para pejabat penyiaran publik dari seluruh negara bagian
+                Amerika Serikat berencana untuk turun ke Capitol Hill dengan harapan dapat meyakinkan...
+              </p>
+              <a href="#" class="btn btn-outline-primary btn-sm read-more">
+                READ MORE <i class="bi bi-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="dynamics-item">
+            <div class="thumb">
+              <img src="assets/dynamics-3.jpg" alt="Pakistan Larang Siaran Lagu India">
+            </div>
+            <div class="body">
+              <h5>Pakistan Larang Siaran Lagu India Di Radio</h5>
+              <div class="meta">
+                <i class="bi bi-calendar3"></i>05 MEI 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+              <p>
+                Islamabad – Menteri Informasi dan Penyiaran Federal, Attaullah Tarar, Kamis (01/05)
+                memuji keputusan berprinsip Asosiasi Penyiaran Pakistan (PBA) untuk menghentikan...
+              </p>
+              <a href="#" class="btn btn-outline-primary btn-sm read-more">
+                READ MORE <i class="bi bi-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!--Item 4 -->
+          <div class="dynamics-item">
+            <div class="thumb">
+              <img src="assets/dynamics-4.jpg" alt="7 Lagu Yang Pernah Dilarang">
+            </div>
+            <div class="body">
+              <h5>7 Lagu Yang Pernah Dilarang Tampil Di KBS, Sebagian Dianggap Melanggar Aturan</h5>
+              <div class="meta">
+                <i class="bi bi-calendar3"></i>21 APRIL 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+              <p>Jakarta – Lagu-lagu dari grup K-Pop seperti BLACKPINK, …</p>
+              <a href="#" class="btn btn-outline-primary btn-sm read-more">
+                READ MORE <i class="bi bi-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Populer (kanan) -->
+        <!-- POPULER -->
+        <div class="col-lg-4">
+          <h5 class="populer-header mb-5"><span>Populer</span></h5>
+
+          <ul class="popular-list">
+            <!-- Item 1 -->
+            <li>
+              <img src="assets/popular-1.jpg" alt="Ketua KPI" class="img-fluid popular-thumb rounded mb-2">
+              <h6 class="popular-title">
+                Ketua KPI: TV Berperan Penting Bangun Citra Polri Secara Akurat Dan Edukatif
+              </h6>
+              <div class="popular-meta">
+                <i class="bi bi-calendar3"></i>08 MEI 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+            </li>
+
+            <!-- Item 2 -->
+            <li>
+              <img src="assets/popular-2.jpg" alt="Komnas Perlindungan Anak" class="img-fluid popular-thumb rounded mb-2">
+              <h6 class="popular-title">
+                Komnas Perlindungan Anak Dukung RUU Penyiaran Dan Penguatan KPI
+              </h6>
+              <div class="popular-meta">
+                <i class="bi bi-calendar3"></i>07 MEI 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+            </li>
+
+            <!-- Item 3 -->
+            <li>
+              <img src="assets/popular-3.jpg" alt="RUU Penyiaran" class="img-fluid popular-thumb rounded mb-2">
+              <h6 class="popular-title">
+                RUU Penyiaran: Keniscayaan Untuk Semua
+              </h6>
+              <div class="popular-meta">
+                <i class="bi bi-calendar3"></i>06 MEI 2025&nbsp;&nbsp;
+                <i class="bi bi-clock"></i>20 MINS
+              </div>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black text-white pt-5 pb-4">
+    <div class="container">
+      <div class="row text-start ms-4 ">
+        <!-- Logo dan Alamat -->
+        <div class="col-md-3 mb-1">
+          <img src="assets/Logo_footer.png" alt="Logo KPI" width="170" class="mb-3">
+          <p class="text-secondary small">
+            Jl. Ir. H. Djuanda No.36, Jakarta 10120 Indonesia.<br>
+            Telp. 021-2234-6444, 22035002, 2346384.<br>
+            Fax. 021-21203907, 2120392.
+          </p>
+        </div>
+
+        <!-- Tentang KPI -->
+        <div class="col-md-2 mb-1">
+          <h6 class="fw-bold">Tentang KPI</h6>
+          <div class="footer-shape mb-3 mt-3"></div>
+          <ul class="list-unstyled text-secondary small">
+            <li><a href="#" class="text-secondary text-decoration-none">Struktur Sekretariat</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">Dasar Pembentukan</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">Visi Dan Misi</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">Profil KPI</a></li>
+          </ul>
+        </div>
+
+        <!-- Struktur Penyiaran -->
+        <div class="col-md-2 mb-1">
+          <h6 class="fw-bold">Struktur Penyiaran</h6>
+          <div class="footer-shape mb-3 mt-3"></div>
+          <ul class="list-unstyled text-secondary small">
+            <li><a href="#" class="text-secondary text-decoration-none">Pengawasan Penyiaran</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">Prosedur Perizinan</a></li>
+          </ul>
+        </div>
+
+        <!-- Regulasi -->
+        <div class="col-md-2 mb-1">
+          <h6 class="fw-bold">Regulasi</h6>
+          <div class="footer-shape mb-3 mt-3"></div>
+          <ul class="list-unstyled text-secondary small">
+            <li><a href="#" class="text-secondary text-decoration-none">Undang-Undang</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">Peraturan KPI</a></li>
+            <li><a href="#" class="text-secondary text-decoration-none">MoU</a></li>
+          </ul>
+        </div>
+
+        <!-- Kontak -->
+        <div class="col-md-3 mb-1">
+          <h6 class="fw-bold">Hubungi Kami</h6>
+          <div class="footer-shape mb-3 mt-3"></div>          
+          <ul class="list-unstyled text-secondary small">
+            <li><i class="bi bi-envelope me-2"></i> Layananpublik@Kpi.Go.Id</li>
+            <li><i class="bi bi-telephone me-2"></i> 021-2234-6444</li>
+            <li><i class="bi bi-chat-dots me-2"></i> 0812-1307-0000</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center border-top border-secondary pt-4 mt-4 text-secondary ">
+        Hak Cipta © 2025 Komisi Penyiaran Indonesia. Semua Hak Dilindungi.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+</body>
+
+</html>
